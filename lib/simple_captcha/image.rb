@@ -38,7 +38,6 @@ module SimpleCaptcha #:nodoc
           DISTORTIONS[rand(DISTORTIONS.length)] :
           DISTORTIONS.include?(key) ? key : 'low'
         case key.to_s
-          when 'none' then return [1, 1]
           when 'low' then return [0 + rand(2), 80 + rand(20)]
           when 'medium' then return [2 + rand(2), 50 + rand(20)]
           when 'high' then return [4 + rand(2), 30 + rand(20)]
@@ -64,11 +63,13 @@ module SimpleCaptcha #:nodoc
 
         params = ImageHelpers.image_params(SimpleCaptcha.image_style).dup
         params << "-size #{SimpleCaptcha.image_size}"
-        params << "-wave #{amplitude}x#{frequency}"
-        #params << "-gravity 'Center'"
-        params << "-gravity \"Center\""
-        params << "-pointsize 22"
-        params << "-implode 0.2"
+        unless SimpleCaptcha.distortion == 'none'
+          params << "-wave #{amplitude}x#{frequency}"
+          #params << "-gravity 'Center'"
+          params << "-gravity \"Center\""
+          params << "-pointsize 22"
+          params << "-implode 0.2"
+        end
 
         dst = Tempfile.new(RUBY_VERSION < '1.9' ? 'simple_captcha.jpg' : ['simple_captcha', '.jpg'], SimpleCaptcha.tmp_path)
         dst.binmode
