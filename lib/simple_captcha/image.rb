@@ -38,6 +38,7 @@ module SimpleCaptcha #:nodoc
           DISTORTIONS[rand(DISTORTIONS.length)] :
           DISTORTIONS.include?(key) ? key : 'low'
         case key.to_s
+          when 'wave' then return [2, 30]
           when 'low' then return [0 + rand(2), 80 + rand(20)]
           when 'medium' then return [2 + rand(2), 50 + rand(20)]
           when 'high' then return [4 + rand(2), 30 + rand(20)]
@@ -65,9 +66,7 @@ module SimpleCaptcha #:nodoc
         params << "-size #{SimpleCaptcha.image_size}"
         params << "-gravity \"Center\""
         params << "-pointsize 22"
-        if SimpleCaptcha.distortion == 'none'
-          params << "-wave 3x30"
-        else
+        unless SimpleCaptcha.distortion == 'none'
           params << "-wave #{amplitude}x#{frequency}"
           params << "-implode 0.2"
         end
