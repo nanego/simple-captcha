@@ -14,7 +14,7 @@ module SimpleCaptcha #:nodoc
       'almost_invisible' => ['-fill red', '-solarize 50', '-background white']
     }
 
-    DISTORTIONS = ['low', 'medium', 'high', 'none']
+    DISTORTIONS = ['low', 'medium', 'high', 'none', 'wave']
 
     class << self
 
